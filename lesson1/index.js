@@ -1,4 +1,5 @@
 const colors = require('colors')
+
 const arguments = process.argv.slice(2).map(input => +input)
 
 // Функция для вывода сообщений об ошибках и выходе из программы
