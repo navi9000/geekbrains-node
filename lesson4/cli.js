@@ -44,8 +44,8 @@ try {
     process.exit()
 }
 
-const isFile = (fileName) => fs.lstatSync(executionDir + '\\' + fileName).isFile();
-const isDir = (dirName) => fs.lstatSync(executionDir + '\\' + dirName).isDirectory();
+const isFile = (fileName) => fs.lstatSync(path.resolve(executionDir,fileName)).isFile();
+const isDir = (dirName) => fs.lstatSync(path.resolve(executionDir, dirName)).isDirectory();
 
 const list = dirName => fs.readdirSync(dirName).filter(isFile);
 const dirList = dirName => fs.readdirSync(dirName).filter(isDir).map(dir => '\\' + dir);
@@ -63,7 +63,7 @@ async function showInquire(choices) {
     ])
 
     if (choice.fileName[0] === '\\') {
-        executionDir += choice.fileName
+        executionDir = path.resolve(executionDir, choice.fileName.slice(1))
         showInquire([...dirList(executionDir), ...list(executionDir)])
     } else {
         const fullFilePath = path.join(executionDir, choice.fileName);
