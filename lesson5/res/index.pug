@@ -1,11 +1,10 @@
+- const trimmedURL = url.endsWith('/') ? url.slice(0, -1) : url
+
 mixin listItem(type, name)
-    form(method='post' action='/')
-        //- img(src=`/img/${type}.png` alt=type)
-        input(type='hidden' name='name' value=name)
-        input(type='hidden' name='type' value=type)
-        div(style={display: 'flex', gap: '10px'})
-            span(style={width: '50px'})= type
-            button(type='submit', style={border: 'none', background: 'none', cursor: 'pointer'})= name
+    form(method='post' action=`${trimmedURL}/${name}`)
+        div(class='form__wrapper')
+            img(src=`img/${type}.png` class='form__img' alt=type )
+            button(type='submit', class='form__button')= name
     hr
 
 
@@ -15,6 +14,7 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(href="css/style.css" rel="stylesheet")
         title Document
     body
         div
