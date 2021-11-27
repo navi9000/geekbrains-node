@@ -1,0 +1,20 @@
+{
+  "name": "lesson4",
+  "version": "1.0.0",
+  "main": "cli.js",
+  "scripts": {
+    "start": "node cli.js"
+  },
+  "bin": {
+    "reader": "cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "inquirer": "^8.2.0",
+    "yargs": "^17.2.1"
+  },
+  "description": ""
+}
