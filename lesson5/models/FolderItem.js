@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-require('dotenv').config()
 
 class FolderItem {
     constructor(name, dir) {
