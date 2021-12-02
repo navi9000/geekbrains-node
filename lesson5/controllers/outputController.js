@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const pug = require('pug')
+const { outputModifier } = require('../helpers')
 require('dotenv').config()
 const {FolderItem} = require('../models/FolderItem')
 
@@ -28,27 +29,44 @@ function getFolder(req, res) {
     res.end(output)
 }
 
-function getFile(req, res) {
+async function getFile(req, res) {
     const fileDir = path.join(process.env.PUBLIC_ROOT, req.url)
-    const fileContent = fs.createReadStream(fileDir)
     if (req.url.match(/\.ico$/)) {
+        const fileContent = fs.createReadStream(fileDir)
         res.writeHead(200, {'Content-Type': 'image/x-icon'})
+        logRequestInfo(200, req)
+        fileContent.pipe(res)
     } else if (req.url.match(/\.png$/)) {
+        const fileContent = fs.createReadStream(fileDir)
         res.writeHead(200, {'Content-Type': 'image/png'})
+        logRequestInfo(200, req)
+        fileContent.pipe(res)
     } else if (req.url.match(/\.css$/)) {
+        const fileContent = fs.readFileSync(fileDir, 'utf-8')
+        if (process.env.PATTERN) {
+            const modifiedFileContent = await outputModifier(fileContent)
+            console.log(modifiedFileContent)
+        }
         res.writeHead(200, {'Content-Type': 'text/css'})
+        logRequestInfo(200, req)
+        res.end(fileContent)
     } else {
+        const fileContent = fs.readFileSync(fileDir, 'utf-8')
+        if (process.env.PATTERN) {
+            const modifiedFileContent = await outputModifier(fileContent)
+            console.log(modifiedFileContent)
+        }
         res.writeHead(200, {'Content-Type': 'text/plain'})
+        logRequestInfo(200, req)
+        res.end(fileContent)
     }
-    logRequestInfo(200, req)
-    fileContent.pipe(res)
 }
 
-function getData(req, res) {
+async function getData(req, res) {
     try {
         const isFile = fs.lstatSync(path.join(process.env.PUBLIC_ROOT, req.url)).isFile()
         if (isFile) {
-            getFile(req, res)
+            await getFile(req, res)
         } else {
             getFolder(req, res)
         }

@@ -21,14 +21,11 @@ block content
             const payload = {
                 url: window.location.pathname
             }
-            console.log(payload)
             socket.emit('send_url', payload)
         })
         socket.on('send_visitors', data => {
-            console.log('URL ME: ', data.url, window.location.pathname)
             if (data.url === window.location.pathname) {
                 const counterElement = document.querySelector('span')
                 counterElement.innerHTML = data.visitors
-                console.log(data)
             }
         })
