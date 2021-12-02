@@ -1,0 +1,14 @@
+.form__wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.form__img {
+    width: 30px;
+}
+
+.form__button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}

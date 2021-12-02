@@ -1,0 +1,31 @@
+extends container.pug
+
+mixin listItem(type, name)
+    - const trimmedURL = url.endsWith('/') ? url.slice(0, -1) : url
+    form(method='post' action=`${trimmedURL}/${name}`)
+        div(class='form__wrapper')
+            img(src=`/img/${type}.png` class='form__img' alt=type )
+            button(type='submit', class='form__button')= name
+    hr
+
+block content
+    each item in items
+        +listItem(item.type, item.name)
+    
+    p(class='visited') Visited: 
+        span
+
+    script.
+        const socket = io('127.0.0.1:3000')
+        socket.on('connect', () => {
+            const payload = {
+                url: window.location.pathname
+            }
+            socket.emit('send_url', payload)
+        })
+        socket.on('send_visitors', data => {
+            if (data.url === window.location.pathname) {
+                const counterElement = document.querySelector('span')
+                counterElement.innerHTML = data.visitors
+            }
+        })
